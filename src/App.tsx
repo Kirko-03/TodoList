@@ -43,7 +43,7 @@ let removeTask = (id:string) => {
 
     return (
 <div className={"App"}>
-        <TodoList title={"Eat"} tasks={taskForTodoList} changeFilter={changeFilter} removeTask={removeTask} addTask={addTask} changeStatus={changeStatus}/>
+        <TodoList title={"Eat"} tasks={taskForTodoList} filter={filter} changeFilter={changeFilter} removeTask={removeTask} addTask={addTask} changeStatus={changeStatus}/>
     {/*<TodoList title={"Games"} tasks={task2}/>*/}
 </div>
     );
