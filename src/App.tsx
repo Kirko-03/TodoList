@@ -62,7 +62,19 @@ function App() {
             newStatus.isDone = !isDone
         setTasksObj({...tasksObj})
     }
-
+    let changeTaskTitle = (taskId: string, newValue:string,todolistId:string) => {
+        let tasks = tasksObj[todolistId]
+        let newStatus = tasks.find(t => t.id === taskId)
+        if (newStatus)
+            newStatus.title=newValue
+        setTasksObj({...tasksObj})
+    }
+   let changeTodolistTitle = (id:string,title:string) =>{
+       const todolist = todolists.find(tl => tl.id === id)
+       if (todolist)
+           todolist.title = title
+       setTodolists([...todolists]);
+   }
     let [todolists, setTodolists] = useState<Array<TodolistsType>>([
         {id: todolistId1, title: "Eat", filter: "all"},
         {id: todolistId2, title: "Games", filter: "completed"}
@@ -86,10 +98,13 @@ function App() {
                     taskForTodoList = taskForTodoList.filter(t => t.isDone)
 
                 return <TodoList key={tl.id} id={tl.id} title={tl.title} tasks={taskForTodoList} filter={tl.filter}
-                                 changeFilter={changeFilter} removeTask={removeTask} removeTodoList={removeTodoList}
+                                 changeFilter={changeFilter}
+                                 changeTodolistTitle={changeTodolistTitle}
+                                 changeTaskTitle={changeTaskTitle}
+                                 removeTask={removeTask} removeTodoList={removeTodoList}
                                  addTask={addTask} changeStatus={changeStatus}/>
             })
-        }{/*<TodoList title={"Games"} tasksObj={task2}/>*/}
+        }
         </div>
     );
 }
