@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React from "react";
 import {FilterTaskType} from "./App";
 import "./App.css"
+import {AddItemForm} from "./AddItem";
 
 export type TaskType = {
     id: string
@@ -20,34 +21,8 @@ type TitleType = {
     removeTodoList:(todolistId:string)=>void
 }
 
+
 export let TodoList = (props: TitleType) => {
-    let [error, setError] = useState<string | null>(null)
-    let [value, setValue] = useState("")
-
-    function onClickAddTask() {
-        setError("")
-        if (value.trim() !== "") {
-            props.addTask(value,props.id)
-            setValue("")
-        } else
-            setError("title is required")
-    }
-
-    let onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value)
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-
-        setError("")
-        if (e.charCode === 13) {
-            if (value.trim() !== "") {
-                props.addTask(value,props.id)
-                setValue("")
-            } else
-                setError("title is required")
-        }
-    }
-
     function allChangeFilter() {
         props.changeFilter("all",props.id)
     }
@@ -62,19 +37,16 @@ export let TodoList = (props: TitleType) => {
 let RemoveTodoList= () =>{
         props.removeTodoList(props.id)
 }
-
+const addTask = (title:string) =>{
+        props.addTask(title,props.id)
+}
     return (
-
         <div className="App">
-            <div>
-                <h3>{props.title}<button onClick={RemoveTodoList}>x</button></h3>
 
-                <div>
-                    <input value={value} className={error ? "error" : ""} onChange={onChangeValue}
-                           onKeyPress={onKeyPressHandler}/>
-                    <button onClick={onClickAddTask}>+</button>
-                    {error && <div className={"error-message"}>{error}</div>}
-                </div>
+            <div>
+
+                <h3>{props.title}<button onClick={RemoveTodoList}>x</button></h3>
+                <AddItemForm addItem={addTask} />
                 <ul>
                     {props.tasks.map(t => {
 
@@ -103,5 +75,5 @@ let RemoveTodoList= () =>{
                 </div>
             </div>
         </div>
-    )
-}
+    )}
+
