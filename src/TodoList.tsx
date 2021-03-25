@@ -73,7 +73,7 @@ export let TodoList = (props: TitleType) => {
                             props.changeTaskTitle(t.id, newValue, props.id)
                         }
 
-                        return <li><Checkbox color="primary" onClick={onClickChangeStatus}
+                        return <li><Checkbox color="secondary" onClick={onClickChangeStatus}
                                              className={t.isDone ? "inviz" : ""} checked={t.isDone}/>
                             <EditableSpan title={t.title} onChange={onChangeHandler}/>
                             <IconButton aria-label="delete">
