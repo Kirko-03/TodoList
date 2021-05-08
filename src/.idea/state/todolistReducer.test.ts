@@ -59,7 +59,7 @@ test('correct filter of todolist should be changed', () => {
     let todolistId2 = v1();
 
     let newFilter: FilterTaskType = "completed";
-let newTitle:string
+    let newTitle:string
     const startState: Array<TodolistsType> = [
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
