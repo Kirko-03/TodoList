@@ -6,7 +6,7 @@ import {AddItemForm} from "./AddItem";
 
 export type FilterTaskType = "all" | "active" | "completed"
 
-type TodolistsType = {
+export type TodolistsType = {
     id: string
     title: string
     filter: FilterTaskType
