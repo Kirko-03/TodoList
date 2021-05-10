@@ -1,6 +1,7 @@
 import { v1 } from "uuid";
 import {todolistsReducer} from "./todolist-reducer"
-import {TodolistsType, FilterTaskType} from './../../App'
+import {TodolistsType, FilterTaskType,TasksObjType} from './../../App'
+import {useState} from "react";
 
 
 test('correct todolist should be removed', () => {
@@ -33,6 +34,8 @@ test('correct todolist should be added', () => {
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe(newTodolistTitle);
 });
+
+
 test('correct todolist should change its name', () => {
     let todolistId1 = v1();
     let todolistId2 = v1();
