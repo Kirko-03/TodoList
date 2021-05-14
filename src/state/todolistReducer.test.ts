@@ -1,6 +1,6 @@
 import { v1 } from "uuid";
 import {todolistsReducer} from "./todolist-reducer"
-import {TodolistsType, FilterTaskType,TasksObjType} from './../../App'
+import {TodolistsType, FilterTaskType,TasksObjType} from '../AppWithRedux'
 import {useState} from "react";
 
 
@@ -29,10 +29,11 @@ test('correct todolist should be added', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
 
-    const endState = todolistsReducer(startState, { type: 'ADD-TODOLIST', title: newTodolistTitle})
+    const endState = todolistsReducer(startState, { type: 'ADD-TODOLIST', title: newTodolistTitle,todolistId:'id'})
 
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe(newTodolistTitle);
+    expect(endState[2].id).toBe('id');
 });
 
 
