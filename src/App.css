@@ -1,24 +1,26 @@
-
-
+/*
 .App {
-  padding: 50px;
+  padding: 30px;
   display: flex;
 }
 
 .App > div {
-
   margin-right: 50px;
 }
-.error{
-  border:1px solid red
+
+.error {
+  border: red 1px solid;
 }
-.error-message{
-  color:red
+
+.error-message {
+  color: red;
 }
-.active-filter{
-  background: darkblue;
-  color:yellow;
+
+.active-filter {
+  background-color: aquamarine;
 }
-.inviz{
-  opacity: 100%;
+
+.is-done {
+  opacity: 0.5;
 }
+*/
