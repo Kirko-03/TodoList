@@ -3,7 +3,7 @@ import { Delete } from "@material-ui/icons";
 import React, { ChangeEvent } from "react";
 import {EditableSpan} from "./EditableSpan";
 import {TaskType} from "./Todolist";
-type TaskInterType={
+export type TaskInterType={
     removeTask: (taskId: string, todolistId: string) => void
     id: string
     taskId:string
