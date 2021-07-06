@@ -14,7 +14,7 @@ export default {
     },
 } as Meta<AddItemFormPropsType>;
 
-const Template: Story = (args:AddItemFormPropsType) => <AddItemForm {...args} />;
+const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args} />;
 
 export const AddItemFormExample = Template.bind({});
 AddItemFormExample.args = {

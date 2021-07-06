@@ -18,7 +18,7 @@ export default {
     },
 } as Meta<EditableSpanPropsType>;
 
-const Template: Story = (args: EditableSpanPropsType) => <EditableSpan {...args} />;
+const Template: Story<EditableSpanPropsType> = (args) => <EditableSpan {...args} />;
 
 export const EditableSpanExample = Template.bind({});
 EditableSpanExample.args = {
