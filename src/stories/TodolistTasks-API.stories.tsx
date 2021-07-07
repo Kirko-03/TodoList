@@ -1,15 +1,14 @@
 import {useEffect, useState} from "react";
-import {todolistAPI} from "../API/todolist-api";
+import {taskAPI} from "../API/todolistTask-api";
 
 export default {
-    title: 'API/Todolist-API'
+    title: 'API/Tasks-API'
 }
-
-
-export const GetTodolists = () => {
+export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.getTodolist().then((res) => {
+
+        taskAPI.getTasks('b32e0d91-1e96-4d9e-8563-3d1263d424aa').then((res) => {
             debugger
             setState(res.data)
         })
@@ -17,31 +16,36 @@ export const GetTodolists = () => {
     return <div> {JSON.stringify(state)}</div>
 
 }
-export const CreateTodolist = () => {
+export const CreateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.createTodolist('kirko')
+
+        taskAPI.createTask('b32e0d91-1e96-4d9e-8563-3d1263d424aa', 'Jeka')
             .then((res) => {
+                debugger
                 setState(res.data)
             })
     }, [])
     return <div> {JSON.stringify(state)}</div>
 }
-export const DeleteTodolist = () => {
+export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.deleteTodolist('5122489c-22bf-4233-b88c-b45ff4ff4458')
+
+        taskAPI.deleteTask('b32e0d91-1e96-4d9e-8563-3d1263d424aa', '2d929ed0-dbbe-4fa5-921a-9698592e3383')
             .then((res) => {
+                debugger
                 setState(res.data)
             })
     }, [])
     return <div> {JSON.stringify(state)}</div>
 }
-export const UpdateTodolist = () => {
+export const UpdateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistAPI.updateTodolist('6ea5d211-a682-40b1-9045-64dee2097f3d', 'WOW')
+        taskAPI.updateTask('b32e0d91-1e96-4d9e-8563-3d1263d424aa', "32741dcd-a6f4-4bf8-ba5c-8190c34a243c", 'Aboba')
             .then((res) => {
+                debugger
                 setState(res.data)
             })
     }, [])
