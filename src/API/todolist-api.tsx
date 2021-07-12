@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {TodolistDomainType} from "../state/todolists-reducer";
 
 type TodolistType= {
     id: string
@@ -23,7 +24,7 @@ export const instanceTodolist = axios.create({
 
 export const todolistAPI={
     getTodolist(){
-        return   instanceTodolist.get<Array<TodolistType>>('/todo-lists')
+        return   instanceTodolist.get<Array<TodolistDomainType>>('/todo-lists')
     },
     createTodolist(title:string){
         return instanceTodolist.post<ResponseType<{item:TodolistType}>>('/todo-lists',{title:title})

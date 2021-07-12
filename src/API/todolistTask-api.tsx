@@ -1,20 +1,21 @@
-
+import { TaskType } from '../Todolist'
 import { instanceTodolist } from './todolist-api'
-type ItemsType={
-    addedDate: string
-    deadline: Date
-    description: string
-    id: string
-    order: number
-    priority:number
-    startDate: Date
+export type TaskDomainType={
+    description:string
+    title:string
     status: number
-    title: string
-    todoListId: string
+    priority:number
+    startDate: string
+    deadline: string
+    id:string
+    todoListId:string
+    order:number
+    addedDate: string
+    isDone:boolean
 }
-type TaskType={
+type TaskAPIType={
 error:string
-    items:Array<ItemsType>
+    items:Array<TaskDomainType>
     totalCount:number
 }
 type ResponseType<D={}> = {
@@ -27,10 +28,10 @@ const instance={...instanceTodolist}
 
 export const taskAPI={
     getTasks(todolistID:string){
-        return  instance.get<TaskType>(`/todo-lists/${todolistID}/tasks`)
+        return  instance.get<TaskAPIType>(`/todo-lists/${todolistID}/tasks`)
     },
     createTask(todolistID:string,title:string){
-        return instance.post<ResponseType<{items:ItemsType}>>(`/todo-lists/${todolistID}/tasks`,{title:title})
+        return instance.post<ResponseType<{item:TaskDomainType}>>(`/todo-lists/${todolistID}/tasks`,{title:title})
 
     },
     deleteTask(todolistID:string,taskId:string){

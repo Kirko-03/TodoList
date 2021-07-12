@@ -12,7 +12,14 @@ import {
     removeTodolistAC,
     todolistsReducer
 } from './state/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
+import {
+    addTaskAC,
+    addTasksTC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    removeTaskAC,
+    tasksReducer
+} from './state/tasks-reducer';
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -52,7 +59,19 @@ function AppWithReducers() {
     },[])
 
     const addTask=useCallback((title: string, todolistId: string)=> {
-        const action = addTaskAC(title, todolistId);
+        const action = addTaskAC({
+            description:'string',
+            title:title,
+            todoListId:todolistId,
+            status: 200,
+            priority:1,
+            startDate:"",
+            deadline:"",
+            id:'idsad',
+            order:1,
+            addedDate:"",
+            isDone:false
+        });
         dispatchToTasks(action);
     },[])
 
