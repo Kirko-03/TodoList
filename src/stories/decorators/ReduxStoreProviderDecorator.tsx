@@ -5,16 +5,18 @@ import {tasksReducer} from "../../features/TodolistsList/tasks-reducer";
 import {todolistsReducer} from "../../features/TodolistsList/todolists-reducer";
 import {AppRootStateType} from "../../app/store";
 import {TaskPriorities, TaskStatuses} from "../../api/todolists-api";
+import {appReducer, ErrorType, RequestStatusType} from "../../app/app-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    app: appReducer
 })
 
 const initialGlobalState = {
     todolists: [
-        {id: "todolistId1", title: "What to learn", addedDate: '9:10:53', order: 0, filter: 'all'},
-        {id: "todolistId2", title: "What to buy", addedDate: '9:10:12', order: 2, filter: 'all'}
+        {id: "todolistId1", title: "What to learn", addedDate: '9:10:53', order: 0, filter: 'all',entityStatus:'idle'},
+        {id: "todolistId2", title: "What to buy", addedDate: '9:10:12', order: 2, filter: 'all',entityStatus:'idle'}
     ],
     tasks: {
         ["todolistId1"]: [
@@ -70,6 +72,10 @@ const initialGlobalState = {
                 addedDate: ''
             },
         ]
+    },
+    app: {
+        status: 'loading' as RequestStatusType,
+        error: null as ErrorType,
     }
 };
 
