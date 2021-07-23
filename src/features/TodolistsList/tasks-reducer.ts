@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {SetErrorAC, SetStatusAC, SetStatusType} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../helpers/errorHandler";
 
 const initialState: TasksStateType = {}
 
@@ -57,7 +58,9 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
             const action = setTasksAC(tasks, todolistId)
             dispatch(action)
             SetStatusAC('succeeded')
-        })
+        }).catch((error) => {
+        handleServerNetworkError(error, dispatch)
+    })
 }
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(SetStatusAC('loading'))
@@ -66,32 +69,31 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
             const action = removeTaskAC(taskId, todolistId)
             dispatch(action)
             dispatch(SetStatusAC('succeeded'))
-        })
+        }).catch((error) => {
+        handleServerNetworkError(error, dispatch)
+    })
 }
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(SetStatusAC('loading'))
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
 
-            if(res.data.resultCode===0) {
+            if (res.data.resultCode === 0) {
                 dispatch(SetStatusAC('loading'))
                 const task = res.data.data.item
                 const action = addTaskAC(task)
                 dispatch(action)
                 dispatch(SetStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
             }
-            else{
-                if(res.data.messages.length)
-                    dispatch(SetErrorAC(res.data.messages[0]))
-                else{
-                    dispatch(SetErrorAC('Some error'))
-                }
-                dispatch(SetStatusAC('failed'))
-        }})
+        }).catch((error) => {
+        handleServerNetworkError(error, dispatch)
+    })
 }
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
     (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
-       
+
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
@@ -113,22 +115,18 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
 
         todolistsAPI.updateTask(todolistId, taskId, apiModel)
             .then((res) => {
-                if(res.data.resultCode===0) {
+                if (res.data.resultCode === 0) {
                     dispatch(SetStatusAC('loading'))
                     const action = updateTaskAC(taskId, domainModel, todolistId)
                     dispatch(action)
                     dispatch(SetStatusAC('succeeded'))
+                } else {
+                    handleServerAppError(res.data, dispatch)
                 }
-                 else{
-                     if(res.data.messages.length)
-                    dispatch(SetErrorAC(res.data.messages[0]))
-                     else{
-                         dispatch(SetErrorAC('Some error'))
-                     }
-                    dispatch(SetStatusAC('failed'))
-                }
-
             })
+            .catch((error) => {
+            handleServerNetworkError(error,dispatch)
+        })
     }
 
 // types
@@ -151,4 +149,4 @@ type ActionsType =
     | RemoveTodolistActionType
     | SetTodolistsActionType
     | ReturnType<typeof setTasksAC>
-    | SetStatusType|ReturnType<typeof SetErrorAC>
+    | SetStatusType | ReturnType<typeof SetErrorAC>

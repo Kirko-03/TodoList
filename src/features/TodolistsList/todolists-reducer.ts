@@ -1,6 +1,8 @@
 import {todolistsAPI, TodolistType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {RequestStatusType, SetErrorAC, SetStatusAC, SetStatusType} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../helpers/errorHandler";
+
 
 const initialState: Array<TodolistDomainType> = []
 
@@ -17,7 +19,7 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
         case 'SET-TODOLISTS':
             return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
         case 'CHANGE-TODOLIST-ENTITY-STATUS':
-            return state.map(tl => tl.id === action.id ? {...tl,entityStatus:action.entityStatus}:tl)
+            return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
         default:
             return state
     }
@@ -50,19 +52,23 @@ export const fetchTodolistsTC = () => {
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
                 dispatch(SetStatusAC('idle'))
-            })
+            }).catch((error) => {
+            handleServerNetworkError(error,dispatch)
+        })
 
     }
 }
 export const removeTodolistTC = (todolistId: string) => {
     return (dispatch: Dispatch<ActionsType>) => {
-        dispatch(changeTodolistEntityStatusAC(todolistId,'loading'))
+        dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
         todolistsAPI.deleteTodolist(todolistId)
             .then(() => {
 
                 dispatch(removeTodolistAC(todolistId))
                 dispatch(SetStatusAC('succeeded'))
-            })
+            }).catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
     }
 }
 export const addTodolistTC = (title: string) => {
@@ -74,14 +80,11 @@ export const addTodolistTC = (title: string) => {
                     dispatch(addTodolistAC(res.data.data.item))
                     dispatch(SetStatusAC('succeeded'))
                 } else {
-                    if (res.data.messages.length)
-                        dispatch(SetErrorAC(res.data.messages[0]))
-                    else {
-                        dispatch(SetErrorAC('Some error'))
-                    }
-                    dispatch(SetStatusAC('failed'))
+                    handleServerAppError(res.data, dispatch)
                 }
-
+            })
+            .catch((error) => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -94,15 +97,12 @@ export const changeTodolistTitleTC = (id: string, title: string) => {
                     dispatch(changeTodolistTitleAC(id, title))
                     dispatch(SetStatusAC('succeeded'))
                 } else {
-                    if (res.data.messages.length) {
-                        dispatch(SetErrorAC(res.data.messages[0]))
-                    } else {
-                        dispatch(SetErrorAC('Some error'))
-                    }
-                    dispatch(SetStatusAC('failed'))
+                    handleServerAppError(res.data, dispatch)
                 }
             })
-
+            .catch((error) =>
+                handleServerNetworkError(error,dispatch)
+            )
     }
 }
 
@@ -116,7 +116,7 @@ type ActionsType =
     | ReturnType<typeof changeTodolistTitleAC>
     | ReturnType<typeof changeTodolistFilterAC>
     | ReturnType<typeof SetErrorAC>
-    |ReturnType<typeof changeTodolistEntityStatusAC >
+    | ReturnType<typeof changeTodolistEntityStatusAC>
     | SetTodolistsActionType | SetStatusType
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {

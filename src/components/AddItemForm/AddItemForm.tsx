@@ -4,16 +4,16 @@ import {AddBox} from '@material-ui/icons';
 
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
-    disabled?:boolean
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo(function ({addItem,disabled}: AddItemFormPropsType) {
+export const AddItemForm = React.memo(function ({addItem, disabled}: AddItemFormPropsType) {
     console.log("AddItemForm called")
-
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
     const addItemHandler = () => {
+
         if (title.trim() !== "") {
             addItem(title);
             setTitle("");
